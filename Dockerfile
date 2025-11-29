@@ -54,9 +54,10 @@ RUN mkdir -p /app/data
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD node -e "console.log('Health check passed')" || exit 1
 
-# Set environment variables
+# Set environment variables for unbuffered logging
 ENV NODE_ENV=production
 ENV PORT=8080
+ENV NODE_OPTIONS="--no-deprecation --trace-uncaught"
 
-# Run the bot
-CMD ["node", "bot.js"]
+# Run the bot with unbuffered output
+CMD ["node", "--unhandled-rejections=strict", "bot.js"]
