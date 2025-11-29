@@ -1,0 +1,27 @@
+{
+  "name": "otp-bot",
+  "version": "1.0.0",
+  "description": "SMS OTP to Telegram Forwarder Bot - Optimized for Google Cloud Run",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "node bot.js"
+  },
+  "keywords": [
+    "otp",
+    "sms",
+    "telegram",
+    "bot",
+    "automation",
+    "google-cloud-run"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.63.0",
+    "puppeteer": "^21.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
