@@ -211,7 +211,7 @@ class OTPBot {
     }
   }
 
-  async fetchLatestSMS() {
+  async fetchLatestSMS(retryCount = 0) {
     try {
       if (!this.page || !this.browser) {
         this.log('warn', '⚠️ Browser or page not initialized');
@@ -230,13 +230,11 @@ class OTPBot {
       const responsePromise = new Promise((resolve) => {
         const handler = async (response) => {
           const url = response.url();
-          console.log(`DEBUG: Response received from ${url}`);
           
           // Match any API response that returns data
           if (url.includes('data_smscdr.php') || url.includes('.php')) {
             try {
               const data = await response.json();
-              console.log(`DEBUG: Got data with structure: ${Object.keys(data).join(', ')}`);
               
               if (data.aaData || data.data) {
                 responseReceived = true;
@@ -245,7 +243,7 @@ class OTPBot {
                 this.page.off('response', handler);
               }
             } catch (err) {
-              console.log(`DEBUG: Error parsing response: ${err.message}`);
+              // Silent on parse errors
             }
           }
         };
@@ -255,11 +253,11 @@ class OTPBot {
         setTimeout(() => {
           this.page.off('response', handler);
           if (!responseReceived) {
-            this.log('warn', '⚠️ SMS data fetch timeout (15s) - no response received');
-            console.log('DEBUG: Timeout - no valid response captured');
+            const timeoutMsg = retryCount > 0 ? `(Retry ${retryCount})` : '';
+            this.log('warn', `⚠️ SMS data fetch timeout (30s) ${timeoutMsg} - retrying...`);
           }
           resolve(null);
-        }, 15000);
+        }, 30000);
       });
 
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -274,12 +272,12 @@ class OTPBot {
                 table.ajax.reload();
               }
             } catch (e) {
-              console.error('DataTable reload error:', e.message);
+              // Silent
             }
           }
         });
       } catch (err) {
-        console.log(`DEBUG: DataTable eval error: ${err.message}`);
+        // Silent on eval errors
       }
 
       responseData = await responsePromise;
@@ -313,11 +311,17 @@ class OTPBot {
         return messages;
       }
       
+      // Retry once if timeout occurred
+      if (retryCount === 0 && !responseData) {
+        this.log('debug', '🔄 Retrying SMS fetch...');
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        return this.fetchLatestSMS(1);
+      }
+      
       this.log('warn', '⚠️ No SMS data received in response');
       return [];
     } catch (err) {
       this.log('error', `❌ SMS fetch error: ${err.message}`);
-      console.log(`DEBUG: SMS fetch exception: ${err.stack}`);
       return [];
     }
   }
