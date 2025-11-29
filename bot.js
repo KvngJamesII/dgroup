@@ -18,7 +18,7 @@ console.log('✅ [STARTUP] All modules loaded successfully\n');
 
 // ==================== CONFIGURATION ====================
 const CONFIG = {
-  telegram_bot_token: '8202874758:AAEYMWFHgD4cxWon_r3Er3b5s1d5BpqYY4c',
+  telegram_bot_token: '8202874758:AAHHp15L_8HPb0qipZA6pnWgextFxWueHPo',
   telegram_chat_ids: [-1003151782333, -1003420206708, -1002733963369],
   panel_username: 'thatspn',
   panel_password: '321456',
