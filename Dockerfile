@@ -19,20 +19,14 @@ FROM node:18-slim
 
 WORKDIR /app
 
-# Install runtime dependencies for Puppeteer and Chrome
+# Install runtime dependencies for Chromium
 RUN apt-get update && apt-get install -y \
-    wget \
-    gnupg \
-    apt-transport-https \
+    chromium \
     ca-certificates \
-    chromium-browser \
-    libxss1 \
-    libappindicator1 \
-    libindicator7 \
-    libnss3 \
-    libxss1 \
-    libxtst6 \
     fonts-liberation \
+    libxss1 \
+    libnss3 \
+    libxtst6 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy node_modules from builder
@@ -54,7 +48,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 ENV NODE_ENV=production
 ENV PORT=8080
 ENV NODE_OPTIONS="--no-deprecation --trace-uncaught"
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 
 # Run the bot with unbuffered output
