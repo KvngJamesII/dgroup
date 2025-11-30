@@ -100,17 +100,21 @@ class OTPBot {
       const launchPromise = puppeteer.launch({
         headless: 'new',
         executablePath: '/usr/bin/chromium',
+        timeout: 90000, // 90 second timeout for Puppeteer
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
           '--disable-gpu',
-          '--disable-blink-features=AutomationControlled'
+          '--disable-blink-features=AutomationControlled',
+          '--disable-extensions',
+          '--no-first-run',
+          '--no-default-browser-check'
         ]
       });
       
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Browser launch timeout (30s)')), 30000)
+        setTimeout(() => reject(new Error('Browser launch timeout (90s)')), 90000)
       );
       
       this.browser = await Promise.race([launchPromise, timeoutPromise]);
