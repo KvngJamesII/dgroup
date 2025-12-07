@@ -18,10 +18,10 @@ console.log('✅ [STARTUP] All modules loaded successfully\n');
 
 // ==================== CONFIGURATION ====================
 const CONFIG = {
-  telegram_bot_token: '8202874758:AAHHp15L_8HPb0qipZA6pnWgextFxWueHPo',
-  telegram_chat_ids: [-1003151782333, -1003420206708, -1002733963369],
-  panel_username: 'thatspn',
-  panel_password: '321456',
+  telegram_bot_token: '8303120794:AAE6w8hURI5x5CRgfBz2B6wuyY8FenUTAhY',
+  telegram_chat_ids: [-1003369788903],
+  panel_username: 'teezupdate',
+  panel_password: 'teezupdate05',
   login_url: 'http://139.99.63.204/ints/login',
   sms_reports_url: 'http://139.99.63.204/ints/agent/SMSCDRReports',
   poll_interval: 30000, // 30 seconds
